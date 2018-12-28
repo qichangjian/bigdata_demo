@@ -1,0 +1,16 @@
+reducejoin:
+现有如此三份数据：
+1、users.dat    数据格式为：  2::M::56::16::70072
+对应字段为：UserID BigInt, Gender String, Age Int, Occupation String, Zipcode String
+对应字段中文解释：用户id，性别，年龄，职业，邮政编码
+
+2、movies.dat		数据格式为： 2::Jumanji (1995)::Adventure|Children's|Fantasy
+对应字段为：MovieID BigInt, Title String, Genres String
+对应字段中文解释：电影ID，电影名字，电影类型
+
+3、ratings.dat		数据格式为：  1::1193::5::978300760
+对应字段为：UserID BigInt, MovieID BigInt, Rating Double, Timestamped String
+对应字段中文解释：用户ID，电影ID，评分，评分时间戳
+
+用户ID，电影ID，评分，评分时间戳，性别，年龄，职业，邮政编码，电影名字，电影类型
+userid, movieId, rate, ts, gender, age, occupation, zipcode, movieName, movieType

@@ -1,0 +1,43 @@
+1.分区算法决定了map输出的数据 如何分配给reduce的
+      MyPartitioner extends Partitioner<Text,Text> 实现 getPartiton()
+
+2.Combiner优化组件 进行reduce端的预处理
+     public class MyCombiner extends Reducer<Text, IntWritable,Text, IntWritable> 实现reduce()
+
+3.自定义类:将多个字段合成一个实体发送
+     public class FlowBean implements Writable  实现Writable接口重写方法
+      实现序列化方法：write()
+      实现反序列化方法：readFields()
+
+4.自定义分组：分组是在排序的基础上，因为分组的时候只判断相邻的
+     class MyGroup extends WritableComparator
+        前提：自定义类中要实现排序的方法compareTo（）
+                并先按照分组条件排序，然后按照排序条件二次排序。
+        第一步：重写构造方法，调用父类的三个参数的方法，最后一个参数改为true
+        第二步：重写compare方法：相邻的比较为0 一组，  不为0的不是一组
+
+5.counter全局计数器
+6.自定义输入
+7.自定义输出
+8.多job串联
+9.mapjoin
+10reducejoin
+
+
+     *    mapreduce编程中用于传输的数据类型必须是具有序列化和反序列化能力的
+     *    hadoop中弃用了java中原生的serializable接口，实现了自己的一套序列化和反序列化接口Writable(只会对数据的值进行序列化)
+     *    原因：java中的序列化和反序列化太重  繁琐
+     *    long  1
+     *
+     *    对于一些常用的数据类型，hadoop已经实现
+     *    int       IntWritable
+     *    long      LongWritable
+     *    string    Text(hadoop.io)
+     *    byte      ByteWritable
+     *    double    DoubleWritable
+     *    float     FloatWritable
+     *    boolean   BooleanWritable
+     *    null      NullWritable
+     *    自己定义的需要序列化和反序列化需要实现Writable接口
+     *    intwritable -- int  数值类型的 get 方法  将hadoop中的数据类型转换为java中的类型
+

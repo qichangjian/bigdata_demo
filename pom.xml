@@ -9,6 +9,9 @@
     <!--模块化开发-->
     <modules>
         <module>sparkcore</module>
+        <module>hdfs</module>
+        <module>mapreduce</module>
+        <module>hive</module>
     </modules>
     <!--集群软件版本-->
     <properties>

@@ -1,0 +1,118 @@
+A:B,C,D,F,E,O
+B:A,C,E,K
+C:F,A,D,I
+D:A,E,F,L
+E:B,C,D,M,L
+F:A,B,C,D,E,O,M
+G:A,C,D,E,F
+H:A,C,D,E,O
+I:A,O
+J:B,O
+K:A,C,D
+L:D,E,F
+M:E,F,G
+O:A,H,I,J,K
+
+以上是数据：
+A:B,C,D,F,E,O
+表示：B,C,D,E,F,O是A用户的好友。
+
+1、求所有两两用户之间的共同好友
+
+部分结果的样式：
+A-E C-D
+A-B C-E
+
+
+
+解题思路：
+
+1、要求出的最终结果是：
+A-B C-E		第二个mapreduce中的reducer的输出
+
+
+2、如果能得到以下格式的数据，就能得到第一步中的数据格式
+A-B C		第二个mapreduce中的mapper阶段的输出
+A-B E
+
+A-B C 这个key-value的意义： C 是 A 和B 的共同好友
+
+
+3、A-B C这种格式的数据怎么得来？
+
+A	C	直接读取一行数据进行解析就能读到，但是不方便得到第2步的结果
+B	C
+这就是第一个mapreduce程序中的mapper阶段
+真正要做的事：
+	1、读取最开始的文本文件中的一行： A:B,C,D,F,E,O
+	2、解析成A B,  A C ,  A D, ....
+	3、在mapper阶段真正输出key-valyue的时候。把key和value倒过来
+	4、最终输出B A,  C A ,  D A, ....
+
+
+4、A C 这种格式的数据的意义：表示 A 用户有一个好友 C
+
+A C 表示 A 用户有一个好友 C
+C A 表示 C 是 A 用户的好友
+如果能得到大量的类似数据：
+
+C A
+C B
+C E
+.....
+
+也就说明：
+C 是 A 和 B 的共同好友
+C 是 A 和 E 的共同好友
+C 是 E 和 B 的共同好友
+
+这就是第一个mapreduce程序reducer阶段。 就是把C 是A B E  的共同好友的数据解析成：
+C A-B
+C A-E
+C B-E
+但是最终输出的时候，倒过来输出key和value
+
+
+
+
+第一个mapreduce
+
+mapper阶段：
+
+	C A
+	C B
+	C E
+
+reducer阶段：
+
+	A-B	C
+	A-E	C
+	B-E	C
+
+
+第二个mapreudce：
+
+mapper阶段：
+
+	A-B	C
+	A-B	E
+	A-B	G
+	
+reudcer阶段：
+
+	A-B	C-E-G
+
+
+
+
+第一个mapreduc程序的输出结果有：
+
+A-B E
+B-A C
+
+
+A-B E
+A-B C
+
+
+14 * 13  == 142条件

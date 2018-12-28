@@ -6,6 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="hdfs" />
+        <module name="hive" />
+        <module name="mapreduce" />
         <module name="sparkcore" />
       </profile>
     </annotationProcessing>
